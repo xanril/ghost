@@ -35,7 +35,7 @@ module.exports = function setupAdminApp() {
     configMaxAge = config.get('caching:admin:maxAge');
     adminApp.use('/assets', serveStatic(
         config.get('paths').clientAssets,
-        {maxAge: (configMaxAge || configMaxAge === 0) ? configMaxAge : constants.ONE_YEAR_MS, fallthrough: false}
+        {maxAge: (configMaxAge || configMaxAge === 0) ? configMaxAge : constants.ONE_YEAR_MS, fallthrough: false, etag: false, lastModified: false}
     ));
 
     // Service Worker for offline support

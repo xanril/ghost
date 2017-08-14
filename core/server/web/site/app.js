@@ -121,6 +121,9 @@ module.exports = function setupSiteApp() {
     // Fetch the frontend client into res.locals
     siteApp.use(frontendClient);
 
+    // don't generate etags; don't want the CDN hitting the server constantly
+    siteApp.disable("etag");
+
     debug('General middleware done');
 
     // Set up Frontend routes (including private blogging routes)
