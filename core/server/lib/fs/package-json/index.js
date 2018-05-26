@@ -10,6 +10,8 @@
  * These utils facilitate loading, reading, managing etc, packages from the file system.
  */
 
+'use strict';
+
 module.exports = {
     get read() {
         return require('./read');

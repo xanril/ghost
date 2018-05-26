@@ -1,13 +1,15 @@
-const Promise = require('bluebird'),
+var Settings,
+    Promise = require('bluebird'),
     _ = require('lodash'),
     uuid = require('uuid'),
     crypto = require('crypto'),
     ghostBookshelf = require('./base'),
     common = require('../lib/common'),
     validation = require('../data/validation'),
-    internalContext = {context: {internal: true}};
 
-let Settings, defaultSettings;
+    internalContext = {context: {internal: true}},
+
+    defaultSettings;
 
 // For neatness, the defaults file is split into categories.
 // It's much easier for us to work with it as a single level
@@ -56,22 +58,21 @@ Settings = ghostBookshelf.Model.extend({
     },
 
     emitChange: function emitChange(event, options) {
-        const eventToTrigger = 'settings' + '.' + event;
-        ghostBookshelf.Model.prototype.emitChange.bind(this)(this, eventToTrigger, options);
+        common.events.emit('settings' + '.' + event, this, options);
     },
 
-    onDestroyed: function onDestroyed(model, options) {
-        model.emitChange('deleted', options);
-        model.emitChange(model._previousAttributes.key + '.' + 'deleted', options);
+    onDestroyed: function onDestroyed(model, response, options) {
+        model.emitChange('deleted');
+        model.emitChange(model.attributes.key + '.' + 'deleted', options);
     },
 
     onCreated: function onCreated(model, response, options) {
-        model.emitChange('added', options);
+        model.emitChange('added');
         model.emitChange(model.attributes.key + '.' + 'added', options);
     },
 
     onUpdated: function onUpdated(model, response, options) {
-        model.emitChange('edited', options);
+        model.emitChange('edited');
         model.emitChange(model.attributes.key + '.' + 'edited', options);
     },
 

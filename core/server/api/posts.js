@@ -1,21 +1,17 @@
 // # Posts API
 // RESTful API for the Post resource
-const Promise = require('bluebird'),
+var Promise = require('bluebird'),
     _ = require('lodash'),
     pipeline = require('../lib/promise/pipeline'),
     localUtils = require('./utils'),
     models = require('../models'),
     common = require('../lib/common'),
     docName = 'posts',
-    /**
-     * @deprecated: `author`, will be removed in Ghost 2.0
-     */
     allowedIncludes = [
-        'created_by', 'updated_by', 'published_by', 'author', 'tags', 'fields', 'authors', 'authors.roles'
+        'created_by', 'updated_by', 'published_by', 'author', 'tags', 'fields'
     ],
-    unsafeAttrs = ['author_id', 'status', 'authors'];
-
-let posts;
+    unsafeAttrs = ['author_id', 'status'],
+    posts;
 
 /**
  * ### Posts API Methods
@@ -221,8 +217,7 @@ posts = {
 
     /**
      * ## Destroy
-     * Delete a post, cleans up tag relations, but not unused tags.
-     * You can only delete a post by `id`.
+     * Delete a post, cleans up tag relations, but not unused tags
      *
      * @public
      * @param {{id (required), context,...}} options
@@ -236,14 +231,15 @@ posts = {
          * @param  {Object} options
          */
         function deletePost(options) {
-            const opts = _.defaults({require: true}, options);
+            var Post = models.Post,
+                data = _.defaults({status: 'all'}, options),
+                fetchOpts = _.defaults({require: true, columns: 'id'}, options);
 
-            return models.Post.destroy(opts).return(null)
-                .catch(models.Post.NotFoundError, function () {
-                    throw new common.errors.NotFoundError({
-                        message: common.i18n.t('errors.api.posts.postNotFound')
-                    });
-                });
+            return Post.findOne(data, fetchOpts).then(function () {
+                return Post.destroy(options).return(null);
+            }).catch(Post.NotFoundError, function () {
+                throw new common.errors.NotFoundError({message: common.i18n.t('errors.api.posts.postNotFound')});
+            });
         }
 
         // Push all of our tasks into a `tasks` array in the correct order

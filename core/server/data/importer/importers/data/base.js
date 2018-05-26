@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('ghost-ignition').debug('importer:base'),
     _ = require('lodash'),
     Promise = require('bluebird'),
@@ -197,7 +199,7 @@ class Base {
             // CASE: you import null, fallback to owner
             if (!obj[key]) {
                 if (!userReferenceProblems[obj.id]) {
-                    userReferenceProblems[obj.id] = {obj: _.cloneDeep(obj), keys: []};
+                    userReferenceProblems[obj.id] = {obj: obj, keys: []};
                 }
 
                 userReferenceProblems[obj.id].keys.push(key);
@@ -215,7 +217,7 @@ class Base {
                 // CASE: fallback to owner
                 if (!existingUser) {
                     if (!userReferenceProblems[obj.id]) {
-                        userReferenceProblems[obj.id] = {obj: _.cloneDeep(obj), keys: []};
+                        userReferenceProblems[obj.id] = {obj: obj, keys: []};
                     }
 
                     userReferenceProblems[obj.id].keys.push(key);
@@ -262,7 +264,7 @@ class Base {
 
                 if (!existingUser) {
                     if (!userReferenceProblems[obj.id]) {
-                        userReferenceProblems[obj.id] = {obj: _.cloneDeep(obj), keys: []};
+                        userReferenceProblems[obj.id] = {obj: obj, keys: []};
                     }
 
                     userReferenceProblems[obj.id].keys.push(key);

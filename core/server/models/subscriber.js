@@ -1,16 +1,16 @@
-const Promise = require('bluebird'),
+var Promise = require('bluebird'),
     ghostBookshelf = require('./base'),
-    common = require('../lib/common');
-
-let Subscriber,
+    common = require('../lib/common'),
+    Subscriber,
     Subscribers;
 
 Subscriber = ghostBookshelf.Model.extend({
     tableName: 'subscribers',
 
     emitChange: function emitChange(event, options) {
-        const eventToTrigger = 'subscriber' + '.' + event;
-        ghostBookshelf.Model.prototype.emitChange.bind(this)(this, eventToTrigger, options);
+        options = options || {};
+
+        common.events.emit('subscriber' + '.' + event, this, options);
     },
 
     defaults: function defaults() {
@@ -27,7 +27,7 @@ Subscriber = ghostBookshelf.Model.extend({
         model.emitChange('edited', options);
     },
 
-    onDestroyed: function onDestroyed(model, options) {
+    onDestroyed: function onDestroyed(model, response, options) {
         model.emitChange('deleted', options);
     }
 }, {

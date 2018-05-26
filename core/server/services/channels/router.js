@@ -1,5 +1,6 @@
 var express = require('express'),
     _ = require('lodash'),
+    config = require('../../config'),
     common = require('../../lib/common'),
     urlService = require('../../services/url'),
     channelController = require('../../controllers/channel'),
@@ -8,8 +9,7 @@ var express = require('express'),
     channelRouter;
 
 function handlePageParam(req, res, next, page) {
-    // routeKeywords.page: 'page'
-    var pageRegex = new RegExp('/page/(.*)?/'),
+    var pageRegex = new RegExp('/' + config.get('routeKeywords').page + '/(.*)?/'),
         rssRegex = new RegExp('/rss/(.*)?/');
 
     page = parseInt(page, 10);
@@ -66,8 +66,7 @@ rssRouter = function rssRouter(channelMiddleware) {
 channelRouter = function channelRouter(channel) {
     var channelRouter = express.Router({mergeParams: true}),
         baseRoute = '/',
-        // routeKeywords.page: 'page'
-        pageRoute = urlService.utils.urlJoin('/page', ':page(\\d+)/'),
+        pageRoute = urlService.utils.urlJoin('/', config.get('routeKeywords').page, ':page(\\d+)/'),
         middleware = [channelConfigMiddleware(channel)];
 
     channelRouter.get(baseRoute, middleware, channelController);

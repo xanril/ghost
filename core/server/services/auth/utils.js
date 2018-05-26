@@ -4,6 +4,7 @@ var Promise = require('bluebird'),
     models = require('../../models'),
     security = require('../../lib/security'),
     constants = require('../../lib/constants'),
+    knex = require('../../data/db').knex,
     _private = {};
 
 /**
@@ -105,7 +106,7 @@ module.exports.createTokens = function createTokens(data, modelOptions) {
         return _private.handleTokenCreation(data, modelOptions);
     }
 
-    return models.Base.transaction(function (transaction) {
+    return knex.transaction(function (transaction) {
         modelOptions.transacting = transaction;
 
         return _private.handleTokenCreation(data, modelOptions);
