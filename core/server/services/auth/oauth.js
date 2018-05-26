@@ -5,11 +5,12 @@ var oauth2orize = require('oauth2orize'),
     authUtils = require('./utils'),
     spamPrevention = require('../../web/middleware/api/spam-prevention'),
     common = require('../../lib/common'),
+    knex = require('../../data/db').knex,
     oauthServer,
     oauth;
 
 function exchangeRefreshToken(client, refreshToken, scope, body, authInfo, done) {
-    models.Base.transaction(function (transacting) {
+    knex.transaction(function (transacting) {
         var options = {
             transacting: transacting
         };

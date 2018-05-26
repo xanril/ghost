@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     get url() {
         return require('./url');

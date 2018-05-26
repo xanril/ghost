@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs-extra'),
     Promise = require('bluebird'),
     moment = require('moment'),

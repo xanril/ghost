@@ -1,10 +1,7 @@
-'use strict';
+var hr = require('./hr'),
+    html = require('./html'),
+    image = require('./image'),
+    markdown = require('./markdown'),
+    cardMarkdown = require('./card-markdown');
 
-module.exports = [
-    require('./card-markdown'),
-    require('./code'),
-    require('./hr'),
-    require('./html'),
-    require('./image'),
-    require('./markdown')
-];
+module.exports = [hr, html, image, markdown, cardMarkdown];

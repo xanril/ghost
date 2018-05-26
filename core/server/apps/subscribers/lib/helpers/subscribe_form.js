@@ -5,6 +5,7 @@ var _ = require('lodash'),
     // (Less) dirty requires
     proxy = require('../../../../helpers/proxy'),
     templates = proxy.templates,
+    config = proxy.config,
     url = proxy.url,
     SafeString = proxy.SafeString,
 
@@ -27,7 +28,7 @@ function makeHidden(name, extras) {
  * document.querySelector['.location']['value'] = document.querySelector('.location')['value'] || window.location.href;
  */
 subscribeScript =
-    '<script>' +
+    '<script type="text/javascript">' +
     '(function(g,h,o,s,t){' +
     'h[o](\'.location\')[s]=h[o](\'.location\')[s] || g.location.href;' +
     'h[o](\'.referrer\')[s]=h[o](\'.referrer\')[s] || h.referrer;' +
@@ -38,8 +39,7 @@ subscribeScript =
 module.exports = function subscribe_form(options) { // eslint-disable-line camelcase
     var root = options.data.root,
         data = _.merge({}, options.hash, _.pick(root, params), {
-            // routeKeywords.subscribe: 'subscribe'
-            action: url.urlJoin('/', url.getSubdir(), 'subscribe/'),
+            action: url.urlJoin('/', url.getSubdir(), config.get('routeKeywords').subscribe, '/'),
             script: new SafeString(subscribeScript),
             hidden: new SafeString(
                 makeHidden('confirm') +

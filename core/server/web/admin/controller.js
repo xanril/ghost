@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('ghost-ignition').debug('admin:controller'),
     path = require('path'),
     config = require('../../config'),

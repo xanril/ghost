@@ -11,15 +11,13 @@
  * 3. data - used for telling the difference between posts and pages
  */
 
-var labs = require('../../services/labs'),
+var config = require('../../config'),
+    labs = require('../../services/labs'),
 
     // Context patterns, should eventually come from Channel configuration
-    // routeKeywords.private: 'private'
-    privatePattern = new RegExp('^\\/private\\/'),
-    // routeKeywords.subscribe: 'subscribe'
-    subscribePattern = new RegExp('^\\/subscribe\\/'),
-    // routeKeywords.amp: 'amp'
-    ampPattern = new RegExp('\\/amp\\/$'),
+    privatePattern = new RegExp('^\\/' + config.get('routeKeywords').private + '\\/'),
+    subscribePattern = new RegExp('^\\/' + config.get('routeKeywords').subscribe + '\\/'),
+    ampPattern = new RegExp('\\/' + config.get('routeKeywords').amp + '\\/$'),
     homePattern = new RegExp('^\\/$');
 
 function setResponseContext(req, res, data) {

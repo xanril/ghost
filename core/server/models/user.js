@@ -1,4 +1,4 @@
-const _ = require('lodash'),
+var _ = require('lodash'),
     Promise = require('bluebird'),
     validator = require('validator'),
     ObjectId = require('bson-objectid'),
@@ -15,9 +15,9 @@ const _ = require('lodash'),
      * locked user: imported users, they get a random passport
      */
     inactiveStates = ['inactive', 'locked'],
-    allStates = activeStates.concat(inactiveStates);
-
-let User, Users;
+    allStates = activeStates.concat(inactiveStates),
+    User,
+    Users;
 
 User = ghostBookshelf.Model.extend({
 
@@ -30,24 +30,23 @@ User = ghostBookshelf.Model.extend({
     },
 
     emitChange: function emitChange(event, options) {
-        const eventToTrigger = 'user' + '.' + event;
-        ghostBookshelf.Model.prototype.emitChange.bind(this)(this, eventToTrigger, options);
+        common.events.emit('user' + '.' + event, this, options);
     },
 
-    onDestroyed: function onDestroyed(model, options) {
+    onDestroyed: function onDestroyed(model, response, options) {
         if (_.includes(activeStates, model.previous('status'))) {
             model.emitChange('deactivated', options);
         }
 
-        model.emitChange('deleted', options);
+        model.emitChange('deleted');
     },
 
-    onCreated: function onCreated(model, attrs, options) {
-        model.emitChange('added', options);
+    onCreated: function onCreated(model) {
+        model.emitChange('added');
 
         // active is the default state, so if status isn't provided, this will be an active user
         if (!model.get('status') || _.includes(activeStates, model.get('status'))) {
-            model.emitChange('activated', options);
+            model.emitChange('activated');
         }
     },
 
@@ -59,11 +58,11 @@ User = ghostBookshelf.Model.extend({
             model.emitChange(model.isActive ? 'activated' : 'deactivated', options);
         } else {
             if (model.isActive) {
-                model.emitChange('activated.edited', options);
+                model.emitChange('activated.edited');
             }
         }
 
-        model.emitChange('edited', options);
+        model.emitChange('edited');
     },
 
     isActive: function isActive() {
@@ -210,13 +209,6 @@ User = ghostBookshelf.Model.extend({
         }
 
         return attrs;
-    },
-
-    emptyStringProperties: function emptyStringProperties() {
-        // CASE: the client might send empty image properties with "" instead of setting them to null.
-        // This can cause GQL to fail. We therefore enforce 'null' for empty image properties.
-        // See https://github.com/TryGhost/GQL/issues/24
-        return ['profile_image', 'cover_image'];
     },
 
     format: function format(options) {

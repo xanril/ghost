@@ -1,15 +1,16 @@
-const Promise = require('bluebird'),
-    ghostBookshelf = require('./base');
-
-let Webhook,
+var Promise = require('bluebird'),
+    ghostBookshelf = require('./base'),
+    common = require('../lib/common'),
+    Webhook,
     Webhooks;
 
 Webhook = ghostBookshelf.Model.extend({
     tableName: 'webhooks',
 
     emitChange: function emitChange(event, options) {
-        const eventToTrigger = 'webhook' + '.' + event;
-        ghostBookshelf.Model.prototype.emitChange.bind(this)(this, eventToTrigger, options);
+        options = options || {};
+
+        common.events.emit('webhook' + '.' + event, this, options);
     },
 
     onCreated: function onCreated(model, response, options) {
@@ -20,7 +21,7 @@ Webhook = ghostBookshelf.Model.extend({
         model.emitChange('edited', options);
     },
 
-    onDestroyed: function onDestroyed(model, options) {
+    onDestroyed: function onDestroyed(model, response, options) {
         model.emitChange('deleted', options);
     }
 }, {

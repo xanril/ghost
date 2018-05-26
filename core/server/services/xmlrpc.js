@@ -75,7 +75,7 @@ function ping(post) {
                 common.logging.error(new common.errors.GhostError({
                     err: err,
                     message: err.message,
-                    context: common.i18n.t('errors.services.ping.requestFailed.error', {service: 'xmlrpc'}),
+                    context: common.i18n.t('errors.services.ping.requestFailed.error', {service: 'slack'}),
                     help: common.i18n.t('errors.services.ping.requestFailed.help', {url: 'http://docs.ghost.org'})
                 }));
             });
