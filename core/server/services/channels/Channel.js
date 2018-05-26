@@ -1,4 +1,7 @@
+'use strict';
+
 var _ = require('lodash'),
+    config  = require('../../config'),
     defaultPostOptions = {};
 
 class Channel {
@@ -47,14 +50,10 @@ class Channel {
     }
 
     translateRoute(route) {
-        const routeKeywords = {
-            tag: 'tag',
-            author: 'author'
-        };
         // @TODO find this a more general / global home, as part of the Router system,
         // so that ALL routes that get registered WITH Ghost can do this
         return route.replace(/:t_([a-zA-Z]+)/, function (fullMatch, keyword) {
-            return routeKeywords[keyword];
+            return config.get('routeKeywords')[keyword];
         });
     }
 }

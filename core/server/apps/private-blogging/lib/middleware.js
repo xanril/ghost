@@ -7,8 +7,7 @@ var fs = require('fs-extra'),
     constants = require('../../../lib/constants'),
     common = require('../../../lib/common'),
     settingsCache = require('../../../services/settings/cache'),
-    // routeKeywords.private: 'private'
-    privateRoute = '/private/',
+    privateRoute = '/' + config.get('routeKeywords').private + '/',
     privateBlogging;
 
 function verifySessionHash(salt, hash) {

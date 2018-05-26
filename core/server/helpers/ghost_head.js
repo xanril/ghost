@@ -44,10 +44,10 @@ function finaliseStructuredData(metaData) {
 }
 
 function getAjaxHelper(clientId, clientSecret) {
-    return '<script src="' +
+    return '<script type="text/javascript" src="' +
         getAssetUrl('public/ghost-sdk.js', true) +
         '"></script>\n' +
-        '<script>\n' +
+        '<script type="text/javascript">\n' +
         'ghost.init({\n' +
         '\tclientId: "' + clientId + '",\n' +
         '\tclientSecret: "' + clientSecret + '"\n' +

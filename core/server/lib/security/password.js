@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports.hash = function hash(plainPassword) {
     const bcrypt = require('bcryptjs'),
         bcryptGenSalt = Promise.promisify(bcrypt.genSalt),

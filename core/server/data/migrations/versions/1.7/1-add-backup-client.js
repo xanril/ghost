@@ -1,3 +1,5 @@
+'use strict';
+
 const models = require('../../../../models'),
     common = require('../../../../lib/common'),
     fixtures = require('../../../schema/fixtures'),

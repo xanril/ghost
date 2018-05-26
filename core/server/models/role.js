@@ -52,19 +52,12 @@ Role = ghostBookshelf.Model.extend({
             origArgs = _.toArray(arguments).slice(1);
 
             // Get the actual role model
-            return this.findOne({id: roleModelOrId, status: 'all'})
-                .then(function then(foundRoleModel) {
-                    if (!foundRoleModel) {
-                        throw new common.errors.NotFoundError({
-                            message: common.i18n.t('errors.models.role.roleNotFound')
-                        });
-                    }
+            return this.findOne({id: roleModelOrId, status: 'all'}).then(function then(foundRoleModel) {
+                // Build up the original args but substitute with actual model
+                var newArgs = [foundRoleModel].concat(origArgs);
 
-                    // Build up the original args but substitute with actual model
-                    var newArgs = [foundRoleModel].concat(origArgs);
-
-                    return self.permissible.apply(self, newArgs);
-                });
+                return self.permissible.apply(self, newArgs);
+            });
         }
 
         if (action === 'assign' && loadedPermissions.user) {

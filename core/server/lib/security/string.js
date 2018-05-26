@@ -1,3 +1,5 @@
+'use strict';
+
 const unidecode = require('unidecode'),
     _ = require('lodash');
 

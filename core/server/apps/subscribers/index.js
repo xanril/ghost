@@ -2,12 +2,12 @@ var router     = require('./lib/router'),
     registerHelpers = require('./lib/helpers'),
 
     // Dirty requires
+    config = require('../../config'),
     labs = require('../../services/labs');
 
 module.exports = {
     activate: function activate(ghost) {
-        // routeKeywords.subscribe: 'subscribe'
-        var subscribeRoute = '/subscribe/';
+        var subscribeRoute = '/' + config.get('routeKeywords').subscribe + '/';
         // TODO, how to do all this only if the Subscribers flag is set?!
         registerHelpers(ghost);
 

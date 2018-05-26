@@ -17,9 +17,6 @@ var proxy = require('./proxy'),
     templates = proxy.templates,
     url = proxy.url;
 
-/**
- * @deprecated: will be removed in Ghost 2.0
- */
 module.exports = function author(options) {
     if (options.fn) {
         return handlebars.helpers.with.call(this, this.author, options);

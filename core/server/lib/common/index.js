@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     get i18n() {
         return require('./i18n');

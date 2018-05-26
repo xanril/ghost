@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('ghost-ignition').debug('importer:users'),
     _ = require('lodash'),
     BaseImporter = require('./base'),

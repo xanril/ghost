@@ -1,5 +1,7 @@
 (function () {
-        var apiUrl = '{{api-url}}',
+    'use strict';
+
+    var apiUrl = '{{api-url}}',
         clientId,
         clientSecret,
         url,

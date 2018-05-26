@@ -1,3 +1,5 @@
+'use strict';
+
 const models = require('../../models');
 
 function getKeywords(data) {

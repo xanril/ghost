@@ -6,6 +6,7 @@
 
 var _ = require('lodash'),
     Promise = require('bluebird'),
+    config = require('../config'),
     models = require('../models'),
     urlService = require('../services/url'),
     configuration = require('./configuration'),
@@ -102,8 +103,7 @@ cacheInvalidationHeader = function cacheInvalidationHeader(req, result) {
             if (hasStatusChanged || wasPublishedUpdated) {
                 return INVALIDATE_ALL;
             } else {
-                // routeKeywords.preview: 'p'
-                return urlService.utils.urlFor({relativeUrl: urlService.utils.urlJoin('/p', post.uuid, '/')});
+                return urlService.utils.urlFor({relativeUrl: urlService.utils.urlJoin('/', config.get('routeKeywords').preview, post.uuid, '/')});
             }
         }
     }
